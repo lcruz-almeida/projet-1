@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Le Livre Magique</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="scene">
+    <div id="book" class="book" role="button" aria-pressed="false" tabindex="0" aria-label="Livre magique">
+      <div class="cover left"></div>
+      <div class="pages">
+        <div class="page page1"></div>
+        <div class="page page2"></div>
+      </div>
+      <div class="cover right"></div>
+    </div>
+
+    <!-- Canvas pour les particules (positionné au-dessus du livre) -->
+    <canvas id="particles"></canvas>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
