@@ -1,0 +1,148 @@
+/* style.css */
+:root{
+  --bg: #0f1724;
+  --book-color: #2b1f12;
+  --page-color: #fffaf0;
+  --accent: #ffd96b;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(ellipse at 20% 10%, rgba(255,220,120,0.05), transparent 10%),
+              linear-gradient(180deg, var(--bg) 0%, #071023 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+}
+
+/* scène pour mieux centrer */
+.scene{
+  width:100%;
+  max-width:900px;
+  height:70vh;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  perspective:1200px; /* nécessaire pour 3D */
+}
+
+/* canvas en absolute pour particules */
+#particles{
+  position:absolute;
+  left:0; top:0; width:100%; height:100%;
+  pointer-events:none; /* cliquable à travers */
+  z-index:5;
+}
+
+/* livre */
+.book{
+  width:480px;
+  height:280px;
+  position:relative;
+  transform-style:preserve-3d;
+  transition: transform 900ms cubic-bezier(.2,.9,.3,1);
+  cursor:pointer;
+  z-index:2;
+}
+
+/* couvercles (visibles comme panneaux 3D) */
+.cover{
+  position:absolute;
+  width:50%;
+  height:100%;
+  top:0;
+  background: linear-gradient(180deg, #3a2a18, #24180f);
+  box-shadow:0 10px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+
+/* couvercle gauche */
+.cover.left{
+  left:0;
+  transform-origin: right center; /* pivote depuis la tranche */
+  border-right: 1px solid rgba(0,0,0,0.25);
+}
+
+/* couvercle droit */
+.cover.right{
+  right:0;
+  left:auto;
+  transform-origin: left center;
+  border-left: 1px solid rgba(0,0,0,0.14);
+}
+
+/* pages centrales */
+.pages{
+  position:absolute;
+  left:25%;
+  width:50%;
+  height:100%;
+  top:0;
+  transform-origin:center center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1;
+  pointer-events:none;
+}
+
+/* page pseudo-feuilles */
+.page{
+  position:absolute;
+  width:95%;
+  height:96%;
+  background: linear-gradient(180deg, var(--page-color), #f7f1e6);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  border-radius:2px;
+  left:2.5%;
+  top:2%;
+  transform-origin: left center;
+  backface-visibility: hidden;
+  overflow:hidden;
+}
+
+/* petites lignes pour donner l'illusion de texte */
+.page::before{
+  content:"";
+  position:absolute;
+  inset:20px 18px;
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.06) 1px, transparent 1px);
+  background-size:100% 18px;
+  opacity:0.7;
+}
+
+/* état ouvert : on tourne le couvercle gauche et page */
+.book.open .cover.left{
+  transform: rotateY(-140deg); /* ouverture prononcée */
+  transition: transform 1000ms cubic-bezier(.2,.9,.2,1);
+}
+.book.open .cover.right{
+  transform: rotateY(10deg); /* léger recul droit */
+  transition: transform 900ms cubic-bezier(.2,.9,.2,1);
+}
+.book.open .pages{
+  transform: translateZ(18px);
+}
+
+/* petit relief au centre pour la tranche */
+.book::after{
+  content:"";
+  position:absolute;
+  left:49.2%;
+  width:1.6%;
+  height:100%;
+  top:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.05));
+  z-index:3;
+}
+
+/* responsive */
+@media (max-width:520px){
+  .book{ width:320px; height:200px; }
+}
