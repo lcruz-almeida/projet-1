@@ -8,17 +8,19 @@
 </head>
 <body>
   <main class="scene">
-    <div id="book" class="book" role="button" aria-pressed="false" tabindex="0" aria-label="Livre magique">
-      <div class="cover left"></div>
-      <div class="pages">
+    <div id="book" class="book" role="button" aria-pressed="false" tabindex="0" aria-label="Livre magique. Appuyez sur Entrée ou cliquez pour ouvrir.">
+      <div class="cover left" aria-hidden="true"></div>
+
+      <div class="pages" aria-hidden="true">
         <div class="page page1"></div>
         <div class="page page2"></div>
       </div>
-      <div class="cover right"></div>
+
+      <div class="cover right" aria-hidden="true"></div>
     </div>
 
-    <!-- Canvas pour les particules (positionné au-dessus du livre) -->
-    <canvas id="particles"></canvas>
+    <!-- Canvas pour les particules (au-dessus du livre) -->
+    <canvas id="particles" aria-hidden="true"></canvas>
   </main>
 
   <script src="script.js" defer></script>
