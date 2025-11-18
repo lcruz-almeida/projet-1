@@ -1,25 +1,27 @@
-/* style.css */
 :root{
   --bg: #0f1724;
   --book-color: #2b1f12;
   --page-color: #fffaf0;
   --accent: #ffd96b;
+  --focus: rgba(255,217,100,0.15);
 }
 
+/* reset & base */
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: radial-gradient(ellipse at 20% 10%, rgba(255,220,120,0.05), transparent 10%),
-              linear-gradient(180deg, var(--bg) 0%, #071023 100%);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(255,220,120,0.04), transparent 8%),
+    linear-gradient(180deg, var(--bg) 0%, #071023 100%);
   display:flex;
   align-items:center;
   justify-content:center;
   color:white;
 }
 
-/* scène pour mieux centrer */
+/* scène */
 .scene{
   width:100%;
   max-width:900px;
@@ -28,14 +30,14 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  perspective:1200px; /* nécessaire pour 3D */
+  perspective:1200px;
 }
 
-/* canvas en absolute pour particules */
+/* canvas */
 #particles{
   position:absolute;
   left:0; top:0; width:100%; height:100%;
-  pointer-events:none; /* cliquable à travers */
+  pointer-events:none;
   z-index:5;
 }
 
@@ -48,9 +50,19 @@ body{
   transition: transform 900ms cubic-bezier(.2,.9,.3,1);
   cursor:pointer;
   z-index:2;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+  user-select: none;
 }
 
-/* couvercles (visibles comme panneaux 3D) */
+/* focus visible */
+.book:focus-visible{
+  box-shadow: 0 6px 30px var(--focus), inset 0 0 0 3px rgba(255,217,100,0.06);
+  border-radius:6px;
+}
+
+/* couvercles */
 .cover{
   position:absolute;
   width:50%;
@@ -58,15 +70,16 @@ body{
   top:0;
   background: linear-gradient(180deg, #3a2a18, #24180f);
   box-shadow:0 10px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
-  transform-origin: left center;
   backface-visibility: hidden;
+  transition: transform 900ms cubic-bezier(.2,.9,.2,1);
 }
 
 /* couvercle gauche */
 .cover.left{
   left:0;
-  transform-origin: right center; /* pivote depuis la tranche */
+  transform-origin: right center;
   border-right: 1px solid rgba(0,0,0,0.25);
+  transform: rotateY(0deg);
 }
 
 /* couvercle droit */
@@ -75,9 +88,10 @@ body{
   left:auto;
   transform-origin: left center;
   border-left: 1px solid rgba(0,0,0,0.14);
+  transform: rotateY(0deg);
 }
 
-/* pages centrales */
+/* pages */
 .pages{
   position:absolute;
   left:25%;
@@ -90,9 +104,10 @@ body{
   justify-content:center;
   z-index:1;
   pointer-events:none;
+  transition: transform 900ms cubic-bezier(.2,.9,.2,1);
 }
 
-/* page pseudo-feuilles */
+/* page */
 .page{
   position:absolute;
   width:95%;
@@ -105,9 +120,10 @@ body{
   transform-origin: left center;
   backface-visibility: hidden;
   overflow:hidden;
+  transition: transform 900ms cubic-bezier(.2,.9,.2,1);
 }
 
-/* petites lignes pour donner l'illusion de texte */
+/* textures "texte" */
 .page::before{
   content:"";
   position:absolute;
@@ -117,20 +133,26 @@ body{
   opacity:0.7;
 }
 
-/* état ouvert : on tourne le couvercle gauche et page */
+/* état ouvert */
 .book.open .cover.left{
-  transform: rotateY(-140deg); /* ouverture prononcée */
+  transform: rotateY(-140deg);
   transition: transform 1000ms cubic-bezier(.2,.9,.2,1);
 }
 .book.open .cover.right{
-  transform: rotateY(10deg); /* léger recul droit */
+  transform: rotateY(10deg);
   transition: transform 900ms cubic-bezier(.2,.9,.2,1);
 }
 .book.open .pages{
   transform: translateZ(18px);
 }
+.book.open .page1{
+  transform: rotateY(-14deg) translateX(-6px);
+}
+.book.open .page2{
+  transform: rotateY(-6deg) translateX(-2px);
+}
 
-/* petit relief au centre pour la tranche */
+/* tranche centrale */
 .book::after{
   content:"";
   position:absolute;
@@ -140,9 +162,15 @@ body{
   top:0;
   background: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.05));
   z-index:3;
+  pointer-events:none;
 }
 
 /* responsive */
 @media (max-width:520px){
   .book{ width:320px; height:200px; }
+}
+
+/* réduction des animations si user préfère */
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; animation: none !important; }
 }
